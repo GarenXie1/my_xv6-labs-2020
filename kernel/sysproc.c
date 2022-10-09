@@ -95,3 +95,15 @@ sys_uptime(void)
   release(&tickslock);
   return xticks;
 }
+
+uint64
+sys_trace(void)
+{
+	int mask;
+	// 获取用户层传入的参数. "trace 32 grep hello README", 则 mask == 32.
+	if(argint(0, &mask) < 0)
+		return -1;
+	myproc()->syscall_trace = mask;
+	//printf("syscall_trace --> %d\n",myproc()->syscall_trace);
+	return 0;
+}
